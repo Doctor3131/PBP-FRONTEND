@@ -10,8 +10,6 @@ const AddProductModal = ({ onClose, onAdd, categories }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Untuk contoh ini, kita buat objek produk.
-    // Dalam aplikasi nyata, Anda akan mengirim FormData ke backend.
     const newProduct = {
       id: Date.now(),
       name,

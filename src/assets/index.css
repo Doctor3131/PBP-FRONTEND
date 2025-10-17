@@ -1,5 +1,3 @@
-/* ... (semua CSS sebelumnya tetap sama) ... */
-
 /* === VARIABEL & GLOBAL === */
 :root {
   --primary-color: #4a90e2;
@@ -58,7 +56,7 @@ body {
   transform: translateX(-100%);
 }
 
-/* Tombol tutup sidebar (hanya 'x') */
+/* Tombol tutup sidebar */
 .sidebar .sidebar-toggle {
   background: none;
   border: none;
@@ -89,7 +87,7 @@ body {
   margin-bottom: 5px;
 }
 
-/* Wrapper untuk item kategori agar bisa ada tombol hapus */
+/* Wrapper untuk item kategori */
 .sidebar .category-item {
   display: flex;
   justify-content: space-between;
@@ -146,7 +144,7 @@ body {
     background-color: #27ae60;
 }
 
-/* Tombol buka sidebar (muncul saat sidebar tertutup) */
+/* Tombol buka sidebar */
 .open-sidebar-btn {
   position: fixed;
   top: 20px;
@@ -165,7 +163,7 @@ body {
     background-color: #34495e;
 }
 
-/* ... (CSS untuk Dashboard, ProductCard, dll. tetap sama) ... */
+/* Dashboard, ProductCard */
 .dashboard {
   max-width: 1200px;
   margin: 0 auto;
@@ -369,7 +367,7 @@ body {
     background-color: #7f8c8d;
 }
 
-/* === PROFILE BUTTON (PERBAIKAN) === */
+/* PROFILE BUTTON (PERBAIKAN) */
 .profile-container {
   position: absolute;
   top: 20px;
@@ -377,13 +375,13 @@ body {
 }
 
 .profile-btn {
-  background: none; /* Hapus background */
-  border: none; /* Hapus border */
-  border-radius: 0; /* Hapus border radius */
+  background: none; 
+  border: none; 
+  border-radius: 0; 
   padding: 0;
   cursor: pointer;
-  width: 40px; /* Sesuaikan ukuran */
-  height: 40px; /* Sesuaikan ukuran */
+  width: 40px; 
+  height: 40px; 
   transition: transform 0.2s;
 }
 .profile-btn:hover {
@@ -393,13 +391,13 @@ body {
 .profile-btn img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Gunakan contain agar gambar tidak terpotong */
+  object-fit: contain; 
   display: block;
 }
 
 .logout-popup {
   position: absolute;
-  top: 50px; /* Sesuaikan dengan tinggi tombol baru */
+  top: 50px;
   right: 0;
   background: var(--card-bg);
   border: 1px solid var(--border-color);

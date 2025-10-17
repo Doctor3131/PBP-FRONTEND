@@ -7,7 +7,6 @@ import Sidebar from "../components/Sidebar";
 import ProfileButton from "../components/ProfileButton";
 import "../assets/index.css";
 
-// --- DATA DUMMY BARU ---
 const CATEGORIES = [
   'Keyboards',
   'Switches', 
@@ -200,14 +199,11 @@ const PRODUCTS = {
   ] 
 };
 
-// --- TRANSFORMASI DATA ---
-// Buat map untuk memudahkan pencarian nama kategori dari key-nya
 const categoryMap = new Map();
 CATEGORIES.forEach(cat => {
   categoryMap.set(cat.toLowerCase(), cat);
 });
 
-// Ubah objek PRODUCTS menjadi array datar yang bisa digunakan oleh state
 const initialProducts = [];
 let productIdCounter = 1;
 
@@ -221,13 +217,12 @@ for (const categoryKey in PRODUCTS) {
         price: product.price,
         stock: product.stock,
         category: categoryName,
-        image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` // Gambar placeholder dinamis
+        image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` 
       });
     });
   }
 }
 
-// --- KOMPONEN UTAMA ---
 export default function DashboardAdmin() {
   const [products, setProducts] = useState(initialProducts);
   const [search, setSearch] = useState("");

@@ -15,7 +15,6 @@ const Sidebar = ({
   return (
     <>
       <aside className="sidebar">
-        {/* Tombol tutup hanya muncul saat sidebar terbuka */}
         {isSidebarOpen && (
           <button className="sidebar-toggle" onClick={onToggleSidebar}>
             ✕
@@ -44,7 +43,7 @@ const Sidebar = ({
                     <button
                       className="category-delete-btn"
                       onClick={(e) => {
-                        e.stopPropagation(); // Mencegah event select kategori terpicu
+                        e.stopPropagation(); 
                         onDeleteCategory(category);
                       }}
                       title="Hapus kategori"
