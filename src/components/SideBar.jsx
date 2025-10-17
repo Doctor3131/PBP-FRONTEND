@@ -9,7 +9,6 @@ const Sidebar = ({
 }) => {
   return (
     <aside className="sidebar">
-      {/* Tombol tutup sidebar hanya muncul saat sidebar terbuka */}
       {isSidebarOpen && (
         <button className="sidebar-toggle" onClick={onToggleSidebar}>
           ✕

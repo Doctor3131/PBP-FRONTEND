@@ -1,5 +1,5 @@
 import React from 'react';
-import cartIcon from '../assets/cartIcon.png'; // Impor gambar ikon
+import cartIcon from '../assets/cartIcon.png'; 
 
 export default function CartButton({ onClick }) {
   return (

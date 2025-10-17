@@ -6,7 +6,6 @@ import CartButton from "../components/CartButton";
 import CartPanel from "../components/CartPanel";
 import "../assets/index.css";
 
-// --- DATA DUMMY BARU ---
 const USERS = [
   { name: 'Admin KeyStore', email: 'admin@keystore.com', role: 'admin' },
   { name: 'Agus Keyboard', email: 'agus@example.com', role: 'customer' },
@@ -207,14 +206,11 @@ const PRODUCTS = {
   ] 
 };
 
-// --- TRANSFORMASI DATA ---
-// Buat map untuk memudahkan pencarian nama kategori dari key-nya
 const categoryMap = new Map();
 CATEGORIES.forEach(cat => {
   categoryMap.set(cat.toLowerCase(), cat);
 });
 
-// Ubah objek PRODUCTS menjadi array datar yang bisa digunakan oleh state
 const initialProducts = [];
 let productIdCounter = 1;
 
@@ -228,13 +224,12 @@ for (const categoryKey in PRODUCTS) {
         price: product.price,
         stock: product.stock,
         category: categoryName,
-        image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` // Gambar placeholder dinamis
+        image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` 
       });
     });
   }
 }
 
-// --- KOMPONEN UTAMA ---
 export default function BerandaPage() {
   const [products] = useState(initialProducts);
   const [categories] = useState(CATEGORIES);
@@ -244,7 +239,6 @@ export default function BerandaPage() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Fungsi untuk keranjang
   const handleAddToCart = (product) => {
     setCart(currentCart => {
       const existingItem = currentCart.find(item => item.id === product.id);
@@ -296,10 +290,8 @@ export default function BerandaPage() {
       
       <main className="main-content">
         <div className="dashboard">
-          {/* Pindahkan CartButton ke sini dan hapus itemCount */}
           <CartButton onClick={() => setIsCartOpen(true)} />
           
-          {/* Header hanya berisi title */}
           <div className="dashboard-header">
             <h1 className="title">Beranda Produk</h1>
           </div>

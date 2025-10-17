@@ -18,7 +18,6 @@ const OrderDetailPage = () => {
   return (
     <div className="order-detail-container">
       <h1>Detail Pesanan</h1>
-      {/* ... sisanya sama seperti yang Anda berikan ... */}
       <div className="order-detail-section">
         <h2>Informasi Pesanan</h2>
         <p><strong>No. Pesanan:</strong> {orderData.id}</p>

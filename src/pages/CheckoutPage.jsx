@@ -4,15 +4,10 @@ import AddressModal from '../components/AddressModal';
 import PaymentModal from '../components/PaymentModal';
 import '../assets/index.css';
 
-// Data dummy statis dihapus karena sekarang data keranjang didapat dari navigasi
-// const dummyCartItems = [ ... ];
-
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Ambil data keranjang dari state yang dikirim dari halaman Beranda
-  // Jika tidak ada data (misal user akses langsung URL), gunakan array kosong
   const cartItems = location.state?.cartItems || [];
 
   const [recipientName, setRecipientName] = useState('Citra Builder');
@@ -23,7 +18,6 @@ const CheckoutPage = () => {
 
   const shippingCost = 15000;
 
-  // Hitung total harga berdasarkan item yang ada di keranjang
   const totalProductPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   const totalCost = totalProductPrice + shippingCost;
 
@@ -37,7 +31,7 @@ const CheckoutPage = () => {
       id: `ORD-${Date.now()}`,
       recipientName,
       address,
-      items: cartItems, // Gunakan data keranjang yang dinamis
+      items: cartItems, 
       totalProductPrice,
       shippingCost,
       totalCost,
@@ -45,11 +39,9 @@ const CheckoutPage = () => {
       status: 'Diproses',
     };
 
-    // Arahkan ke halaman detail pesanan dan bawa data pesanan
     navigate(`/order/${orderData.id}`, { state: orderData });
   };
 
-  // Jika keranjang kosong, tampilkan pesan dan tombol kembali
   if (cartItems.length === 0) {
     return (
       <div className="checkout-container" style={{textAlign: 'center'}}>

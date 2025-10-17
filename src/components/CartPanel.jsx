@@ -1,14 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Impor useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem }) {
-  const navigate = useNavigate(); // Inisialisasi navigate
+  const navigate = useNavigate(); 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   const handleCheckout = () => {
-    // Tutup panel keranjang
     onClose();
-    // Arahkan ke halaman checkout dan bawa data keranjang
     navigate('/checkout', { state: { cartItems: cart } });
   };
 
@@ -24,7 +22,6 @@ export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onR
           {cart.length === 0 ? <p>Keranjang Anda kosong.</p> : (
             cart.map((item) => (
               <div key={item.id} className="cart-item">
-                {/* ... isi cart item tetap sama ... */}
                 <img src={item.image} alt={item.name} />
                 <div className="cart-item-details">
                   <h4>{item.name}</h4>
@@ -43,7 +40,6 @@ export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onR
         {cart.length > 0 && (
           <div className="cart-footer">
             <h3>Total: Rp {totalPrice.toLocaleString('id-ID')}</h3>
-            {/* Ganti Link dengan button yang memanggil handleCheckout */}
             <button className="checkout-btn" onClick={handleCheckout}>
               Checkout
             </button>

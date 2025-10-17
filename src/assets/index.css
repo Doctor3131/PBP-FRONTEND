@@ -126,18 +126,17 @@ body {
 
 .dashboard-header {
   display: flex;
-  justify-content: center; /* Ini akan membuat judul berada di tengah */
+  justify-content: center; 
   align-items: center;
-  position: relative; /* Ini menjadi acuan untuk posisi tombol keranjang */
+  position: relative; 
   margin-bottom: 20px;
-  height: 60px; /* Beri tinggi agar konsisten */
+  height: 60px; 
 }
 
 .title {
-  /* text-align: center; tidak lagi diperlukan, tapi tidak apa-apa jika dibiarkan */
-  margin: 0; /* Hapus margin default h1 agar posisi lebih presisi */
+  margin: 0; 
   color: var(--text-color);
-  font-size: 28px; /* Sesuaikan ukuran jika perlu */
+  font-size: 28px; 
 }
 
 .search-bar {
@@ -587,27 +586,23 @@ body {
   .modal { width: 95%; }
 }
 
-/* ... (CSS sebelumnya tetap sama) ... */
-
 /* === KOMPONEN UMUM === */
 .dashboard {
   max-width: 1200px;
   margin: 0 auto;
-  position: relative; /* Tambahkan ini untuk konteks positioning */
+  position: relative; 
 }
 
 .dashboard-header {
-  /* Hapus justify-content: space-between; */
   margin-bottom: 20px;
 }
 
 .title {
-  text-align: center; /* Pastikan judul di tengah */
+  text-align: center; 
   margin-bottom: 30px;
   color: var(--text-color);
 }
 
-/* ... (CSS lainnya tetap sama) ... */
 
 /* === TOMBOL KERANJANG (BARU) === */
 .cart-icon-btn {
@@ -616,13 +611,13 @@ body {
   right: 20px;
   background: none;
   border: none;
-  border-radius: 0; /* Hapus border radius */
+  border-radius: 0; 
   padding: 0;
   cursor: pointer;
-  width: 40px; /* Sesuaikan ukuran */
-  height: 40px; /* Sesuaikan ukuran */
+  width: 40px; 
+  height: 40px; 
   transition: transform 0.2s;
-  z-index: 10; /* Pastikan di atas elemen lain */
+  z-index: 10; 
 }
 
 .cart-icon-btn:hover {
@@ -632,11 +627,10 @@ body {
 .cart-icon-btn img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Pastikan gambar tidak terpotong */
+  object-fit: contain; 
   display: block;
 }
 
-/* Sembunyikan class .cart-button lama jika masih ada */
 .cart-button {
   display: none;
 }
