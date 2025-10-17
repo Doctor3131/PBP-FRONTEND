@@ -1,124 +1,375 @@
+/* ... (semua CSS sebelumnya tetap sama) ... */
+
+/* === VARIABEL & GLOBAL === */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #f39c12;
+  --danger-color: #e74c3c;
+  --success-color: #2ecc71;
+  --background-color: #f4f7f6;
+  --sidebar-bg: #2c3e50;
+  --sidebar-text: #ecf0f1;
+  --card-bg: #ffffff;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --sidebar-width: 250px;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* === LAYOUT UTAMA === */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
   padding: 20px;
-  background: #f9f9f9;
+  transition: margin-left 0.3s ease;
+  margin-left: var(--sidebar-width);
 }
 
+.app-container.sidebar-closed .main-content {
+  margin-left: 0;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.app-container.sidebar-closed .sidebar {
+  transform: translateX(-100%);
+}
+
+/* Tombol tutup sidebar (hanya 'x') */
+.sidebar .sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: var(--sidebar-text);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 5px;
+}
+
+/* Wrapper untuk item kategori agar bisa ada tombol hapus */
+.sidebar .category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.sidebar .category-item:hover {
+  background-color: #34495e;
+}
+
+.sidebar .category-item.active {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+}
+
+.sidebar .category-item.active .category-delete-btn {
+  color: white;
+}
+
+/* Tombol hapus kategori */
+.category-delete-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  line-height: 1;
+  margin-left: 10px;
+  transition: color 0.2s;
+}
+.category-delete-btn:hover {
+  color: var(--danger-color);
+}
+
+.add-category-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+.add-category-btn:hover {
+    background-color: #27ae60;
+}
+
+/* Tombol buka sidebar (muncul saat sidebar tertutup) */
+.open-sidebar-btn {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  z-index: 999;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 24px;
+  transition: background-color 0.2s;
+}
+.open-sidebar-btn:hover {
+    background-color: #34495e;
+}
+
+/* ... (CSS untuk Dashboard, ProductCard, dll. tetap sama) ... */
 .dashboard {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
-  position: relative;
 }
-
 .title {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  color: var(--text-color);
 }
-
 .search-bar {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .search-bar input {
   width: 60%;
-  padding: 8px;
+  padding: 12px 15px;
+  border: 1px solid var(--border-color);
+  border-radius: 25px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
-
 .product-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
 }
-
 .product-card {
-  background: white;
-  padding: 15px;
-  border-radius: 8px;
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 10px;
   text-align: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
 }
 .product-card img {
   width: 100%;
-  height: 250px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+.product-card h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+.product-desc {
+  font-size: 14px;
+  color: #777;
+  margin: 8px 0;
+  flex-grow: 1;
+}
+.product-price {
+  font-weight: bold;
+  color: var(--success-color);
+  font-size: 18px;
+  margin: 10px 0;
 }
 .stock-controls {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 .stock-controls button {
-  padding: 5px 10px;
-}
-.delete-btn {
-  background: red;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 5px 10px;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
   cursor: pointer;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
 }
-
+.stock-controls button:hover {
+    background-color: #3a7bc8;
+}
+.delete-btn {
+  background: var(--danger-color);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+.delete-btn:hover {
+    background-color: #c0392b;
+}
 .no-products {
   text-align: center;
   font-style: italic;
+  font-size: 18px;
+  color: #888;
+  grid-column: 1 / -1;
 }
-
 .add-btn {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: green;
+  bottom: 30px;
+  right: 30px;
+  background: var(--success-color);
   color: white;
   font-size: 24px;
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.2s;
+  z-index: 100;
+}
+.add-btn:hover {
+    background-color: #27ae60;
+    transform: scale(1.1);
 }
 
-.modul-overlay {
+/* === MODAL === */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
 }
-.modul {
-  background: white;
+.modal {
+  background: var(--card-bg);
   padding: 30px;
-  border-radius: 8px;
-  width: 300px;
-  margin: 0 auto;
-}
-.modul input {
-  display: block;
+  border-radius: 10px;
   width: 90%;
-  margin: 10px auto;
-  padding: 8px;
-  box-sizing: border-box;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-.modul textarea {
+.modal h2 {
+  margin-top: 0;
+  color: var(--text-color);
+}
+.modal label {
   display: block;
-  width: 90%;        
-  margin: 10px auto;
-  padding: 8px;
-  box-sizing: border-box;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
 }
-.modul-actions {
-  padding: 5px 0;
+.modal input, .modal textarea, .modal select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+.modal-actions {
+  margin-top: 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.modal-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+.modal-actions button[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+}
+.modal-actions button[type="submit"]:hover {
+    background-color: #3a7bc8;
+}
+.modal-actions button[type="button"] {
+  background-color: #95a5a6;
+  color: white;
+}
+.modal-actions button[type="button"]:hover {
+    background-color: #7f8c8d;
 }
 
+/* === PROFILE BUTTON (PERBAIKAN) === */
 .profile-container {
   position: absolute;
   top: 20px;
@@ -126,42 +377,46 @@ body {
 }
 
 .profile-btn {
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 18px;
+  background: none; /* Hapus background */
+  border: none; /* Hapus border */
+  border-radius: 0; /* Hapus border radius */
+  padding: 0;
   cursor: pointer;
+  width: 40px; /* Sesuaikan ukuran */
+  height: 40px; /* Sesuaikan ukuran */
+  transition: transform 0.2s;
+}
+.profile-btn:hover {
+    transform: scale(1.1);
+}
+
+.profile-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Gunakan contain agar gambar tidak terpotong */
+  display: block;
 }
 
 .logout-popup {
   position: absolute;
-  top: 50px;
+  top: 50px; /* Sesuaikan dengan tinggi tombol baru */
   right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 8px 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
 }
 .logout-popup button {
-  background: red;
+  background: var(--danger-color);
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 15px;
   cursor: pointer;
   border-radius: 4px;
-}
-.product-desc {
-  font-size: 14px;
-  color: #555;
-  margin: 8px 0;
-}
-.product-price {
   font-weight: bold;
-  color: #2c7a2c;
-  margin: 5px 0;
+  transition: background-color 0.2s;
 }
-
+.logout-popup button:hover {
+    background-color: #c0392b;
+}

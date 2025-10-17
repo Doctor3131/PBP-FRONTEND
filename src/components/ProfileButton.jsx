@@ -1,4 +1,5 @@
 import { useState } from "react";
+import userIcon from "../assets/image.png"; // Impor gambar
 
 export default function ProfileButton() {
   const [open, setOpen] = useState(false);
@@ -9,7 +10,7 @@ export default function ProfileButton() {
         className="profile-btn"
         onClick={() => setOpen(!open)}
       >
-        P
+        <img src={userIcon} alt="Profile" />
       </button>
       {open && (
         <div className="logout-popup">
