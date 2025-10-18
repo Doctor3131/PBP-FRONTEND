@@ -1,39 +1,68 @@
-import { Link, useNavigate } from 'react-router-dom'
+// src/components/Header.jsx
+import React from 'react'
 
-const Header = ({ showSearchBar, showCartButton, showSidebarButton }) => {
-  const navigate = useNavigate()
+export default function Header({
+  search,
+  setSearch,
+  onToggleSidebar,
+  onCartClick,
+  onWishlistClick,
+  cartCount,
+  wishlistCount,
+  userRole,
+  onNavigate,
+  onLogout
+}) {
+  const handleLogoutClick = () => {
+    if (window.confirm('Apakah Anda yakin ingin logout?')) {
+      onLogout()
+    }
+  }
 
   return (
-    <header className="app-header" style={{ height: '70px', padding: '0 20px' }}>
+    <header className="app-header">
       <div className="header-left">
-        {showSidebarButton && (
-          <button className="menu-toggle-btn" onClick={() => { }}>☰</button>
-        )}
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <h1 className="app-title">KeyStore</h1>
-        </Link>
+        <button className="menu-toggle-btn" onClick={onToggleSidebar}>
+          ☰
+        </button>
+        <h1 className="app-title">KeyStore</h1>
       </div>
-
-      {showSearchBar && (
-        <div className="header-center">
-          <div className="search-bar">
-            <input type="text" placeholder="Search products..." />
-          </div>
-        </div>
-      )}
-
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
       <div className="header-right">
-        {showCartButton && (
-          <button className="cart-icon-btn" onClick={() => navigate('/cart')}>
-            🛒
+        {userRole === 'visitor' ? (
+          <button
+            onClick={() => onNavigate('login')}
+            style={{ padding: '8px 16px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' }}>
+            Login
           </button>
+        ) : (
+          <>
+            {/* Tombol Wishlist */}
+            <button className="cart-icon-btn" onClick={onWishlistClick} title="Wishlist">
+              ❤️
+              {wishlistCount > 0 && <span className="cart-count-badge" style={{ backgroundColor: '#e74c3c' }}>{wishlistCount}</span>}
+            </button>
+            {/* Tombol Cart */}
+            <button className="cart-icon-btn" onClick={onCartClick} title="Cart">
+              🛒
+              {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
+            </button>
+            <button className="user-icon-btn" style={{ fontSize: '1.5em' }} title={userRole === 'admin' ? 'Admin' : 'User'}>
+              {userRole === 'admin' ? '👑' : '👤'}
+            </button>
+            <button onClick={handleLogoutClick} style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '500', fontSize: '0.9em' }}>
+              Logout
+            </button>
+          </>
         )}
-        <div className="user-dropdown">
-          <button className="user-icon-btn">👤</button>
-        </div>
       </div>
     </header>
   )
 }
-
-export default Header

@@ -1,46 +1,61 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom" // <-- PENTING: Gunakan useNavigate di sini!
+// src/pages/BerandaPage.jsx (Final)
 
-import ProductCardUser from "../components/ProductCard.jsx"
-import Sidebar from "../components/Sidebar.jsx"
-import CartPanel from "../components/CartPanel"
-import Header from "../components/Header"
-import { useProducts } from "../hooks/useProducts"
-import "../assets/index.css"
+import { useState } from 'react'
+import ProductCardUser from '../components/ProductCardUser.jsx'
+import CartPanel from '../components/CartPanel.jsx'
+import WishlistPanel from '../components/WishlistPanel.jsx'
+import Sidebar from '../components/Sidebar.jsx' // Import Komponen
+import Header from '../components/Header.jsx' // Import Komponen
+import { useProducts } from '../hooks/useProducts.js'
+import '../assets/index.css' // Pastikan CSS terimpor
 
-// *Diasumsikan* Anda akan mengintegrasikan hook dan state dari App.jsx lama di sini nanti.
-// Untuk saat ini, kita akan menggunakan state yang ada dan menambahkan useNavigate.
-
-export default function BerandaPage() {
-  const navigate = useNavigate() // <-- Hook yang sebelumnya tidak digunakan
-
+export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLogout }) {
   const { products, categories } = useProducts()
   const [search, setSearch] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [cart, setCart] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState("Home")
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
 
-  // ... (handleAddToCart, handleUpdateQuantity, handleRemoveItem, dll. tetap sama)
+  const [wishlist, setWishlist] = useState([])
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false)
+
   const handleAddToCart = (product) => {
+    // ... (Logika handleAddToCart dari langkah sebelumnya)
+    if (userRole === 'visitor') {
+      alert('Silakan login terlebih dahulu untuk menambahkan produk ke keranjang.')
+      onNavigate('login')
+      return
+    }
+
     setCart(currentCart => {
       const existingItem = currentCart.find(item => item.id === product.id)
       if (existingItem) {
+        if (existingItem.quantity >= existingItem.stock) {
+          alert(`Stok ${product.name} sudah maksimal!`)
+          return currentCart
+        }
         return currentCart.map(item =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         )
       }
-      return [...currentCart, { ...product, quantity: 1 }]
+      return [...currentCart, { ...product, quantity: 1, image: product.image, stock: product.stock }]
     })
   }
 
   const handleUpdateQuantity = (id, newQuantity) => {
+    // ... (Logika handleUpdateQuantity)
     if (newQuantity <= 0) {
       handleRemoveItem(id)
       return
     }
     setCart(currentCart =>
-      currentCart.map(item => (item.id === id ? { ...item, quantity: newQuantity } : item))
+      currentCart.map(item => {
+        if (item.id === id) {
+          const validQuantity = Math.min(newQuantity, item.stock)
+          return { ...item, quantity: validQuantity }
+        }
+        return item
+      })
     )
   }
 
@@ -48,49 +63,102 @@ export default function BerandaPage() {
     setCart(currentCart => currentCart.filter(item => item.id !== id))
   }
 
+  const handleAddToWishlist = (product) => {
+    // ... (Logika handleAddToWishlist)
+    if (userRole === 'visitor') {
+      alert('Silakan login terlebih dahulu untuk menambahkan produk ke Wishlist.')
+      onNavigate('login')
+      return
+    }
+
+    setWishlist(currentWishlist => {
+      if (currentWishlist.some(item => item.id === product.id)) {
+        alert(`${product.name} sudah ada di Wishlist!`)
+        return currentWishlist
+      }
+      alert(`${product.name} ditambahkan ke Wishlist!`)
+      return [...currentWishlist, product]
+    })
+  }
+
+  const handleRemoveFromWishlist = (id) => {
+    setWishlist(currentWishlist => currentWishlist.filter(item => item.id !== id))
+  }
+
+  const handleMoveToCart = (product) => {
+    handleAddToCart(product)
+    handleRemoveFromWishlist(product.id)
+  }
+
+  const handleCategorySelect = (cat) => {
+    setSelectedCategory(cat)
+    // Tutup sidebar setelah memilih kategori
+    setIsSidebarOpen(false)
+  }
+
   const handleCheckout = () => {
+    // ... (Logika handleCheckout)
+    if (userRole === 'visitor') {
+      alert('Silakan login terlebih dahulu untuk melakukan checkout')
+      onNavigate('login')
+      return
+    }
+
     if (cart.length > 0) {
-      // Menggunakan useNavigate untuk berpindah ke rute /checkout dan membawa data keranjang
-      navigate("/checkout", { state: { cartItems: cart } })
-      setIsCartOpen(false) // Tutup panel keranjang setelah checkout
+      onNavigate('checkout', { cartItems: cart })
+      setIsCartOpen(false)
     } else {
       alert("Keranjang belanja kosong!")
     }
   }
-  // ... (end of state/logic)
 
   const filteredProducts = products.filter(p => {
+    const categoryKey = p.category.toLowerCase().replace(/ /g, '-')
+    const selectedKey = selectedCategory.toLowerCase().replace(/ /g, '-')
+
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase())
-    const matchesCategory = selectedCategory === "" || p.category === selectedCategory
+    const matchesCategory = selectedCategory === "Home" || categoryKey === selectedKey
     return matchesSearch && matchesCategory
   })
 
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0)
+  const wishlistCount = wishlist.length
 
   return (
-    <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+    <div className={`app-container ${isSidebarOpen ? '' : 'sidebar-closed'}`}>
+
+      {/* Menggunakan Komponen Sidebar */}
       <Sidebar
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategorySelect={setSelectedCategory}
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(false)}
-        readOnly={true}
+        onCategorySelect={handleCategorySelect}
       />
 
       <main className="main-content">
+
+        {/* Menggunakan Komponen Header */}
         <Header
           search={search}
           setSearch={setSearch}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           onCartClick={() => setIsCartOpen(true)}
+          onWishlistClick={() => setIsWishlistOpen(true)}
           cartCount={cartCount}
+          wishlistCount={wishlistCount}
+          userRole={userRole}
+          onNavigate={onNavigate}
+          onLogout={onLogout}
         />
 
         <div className="dashboard">
           <div className="product-list">
             {filteredProducts.map(product => (
-              <ProductCardUser key={product.id} product={product} onAddToCart={handleAddToCart} />
+              <ProductCardUser
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
+              />
             ))}
           </div>
         </div>
@@ -102,8 +170,15 @@ export default function BerandaPage() {
         cart={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
-        // Tambahkan prop onCheckout ke CartPanel
         onCheckout={handleCheckout}
+      />
+
+      <WishlistPanel
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        wishlist={wishlist}
+        onRemoveItem={handleRemoveFromWishlist}
+        onMoveToCart={handleMoveToCart}
       />
     </div>
   )

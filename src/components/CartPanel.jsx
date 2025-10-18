@@ -1,3 +1,6 @@
+// src/components/CartPanel.jsx
+import React from 'react'
+
 export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onRemoveItem, onCheckout }) {
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -15,6 +18,7 @@ export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onR
         ) : (
           cart.map(item => (
             <div key={item.id} className="cart-item">
+              {/* Perbaikan: Menggunakan tag <img> */}
               <img src={item.image} alt={item.name} className="cart-item-image" />
               <div className="cart-item-details">
                 <h4>{item.name}</h4>
@@ -43,7 +47,7 @@ export default function CartPanel({ isOpen, onClose, cart, onUpdateQuantity, onR
 
         {cart.length > 0 && (
           <button
-            onClick={onCheckout} // <-- Menghubungkan ke `handleCheckout` di BerandaPage
+            onClick={onCheckout}
             className="checkout-button"
           >
             Lanjutkan ke Checkout →
