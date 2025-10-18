@@ -1,4 +1,8 @@
+import { useNavigate } from 'react-router-dom' // Import useNavigate
+
 export default function Cart({ cartItems, setCartItems }) {
+  const navigate = useNavigate() // Use useNavigate hook
+
   const removeItem = name => setCartItems(cartItems.filter(item => item.name !== name))
 
   const updateQuantity = (name, quantity, maxStock) => {
@@ -7,6 +11,10 @@ export default function Cart({ cartItems, setCartItems }) {
   }
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
+
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { cartItems } })
+  }
 
   return (
     <div style={{ background: "#fff", padding: "20px", borderRadius: "10px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
@@ -32,7 +40,26 @@ export default function Cart({ cartItems, setCartItems }) {
           </div>
         </div>
       ))}
-      {cartItems.length > 0 && <h3 style={{ marginTop: '20px' }}>Total: Rp {total.toLocaleString()}</h3>}
+      {cartItems.length > 0 && (
+        <>
+          <h3 style={{ marginTop: '20px' }}>Total: Rp {total.toLocaleString()}</h3>
+          <button
+            onClick={handleCheckout}
+            style={{
+              marginTop: '15px',
+              padding: '10px 20px',
+              backgroundColor: '#28a745',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              width: '100%'
+            }}
+          >
+            Proceed to Checkout
+          </button>
+        </>
+      )}
     </div>
   )
 }
