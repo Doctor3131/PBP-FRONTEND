@@ -1,26 +1,31 @@
-// src/pages/BerandaPage.jsx (Final)
-
 import { useState } from 'react'
+
+// Pastikan semua komponen ini diimpor dari lokasi yang benar
 import ProductCardUser from '../components/ProductCardUser.jsx'
 import CartPanel from '../components/CartPanel.jsx'
 import WishlistPanel from '../components/WishlistPanel.jsx'
-import Sidebar from '../components/Sidebar.jsx' // Import Komponen
-import Header from '../components/Header.jsx' // Import Komponen
+import Sidebar from '../components/Sidebar.jsx'
+import Header from '../components/Header.jsx'
 import { useProducts } from '../hooks/useProducts.js'
-import '../assets/index.css' // Pastikan CSS terimpor
+import '../assets/index.css'
 
+// Prop yang diterima dari App.jsx: onNavigate, userRole, cart, setCart, onLogout
 export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLogout }) {
+  // === STATE DAN HOOKS ===
   const { products, categories } = useProducts()
   const [search, setSearch] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("Home")
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
 
+  // PERBAIKAN: setWishlist HARUS didefinisikan di sini
   const [wishlist, setWishlist] = useState([])
   const [isWishlistOpen, setIsWishlistOpen] = useState(false)
+  // =======================
 
+
+  // === LOGIKA CART ===
   const handleAddToCart = (product) => {
-    // ... (Logika handleAddToCart dari langkah sebelumnya)
     if (userRole === 'visitor') {
       alert('Silakan login terlebih dahulu untuk menambahkan produk ke keranjang.')
       onNavigate('login')
@@ -43,7 +48,6 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
   }
 
   const handleUpdateQuantity = (id, newQuantity) => {
-    // ... (Logika handleUpdateQuantity)
     if (newQuantity <= 0) {
       handleRemoveItem(id)
       return
@@ -63,8 +67,23 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
     setCart(currentCart => currentCart.filter(item => item.id !== id))
   }
 
+  const handleCheckout = () => {
+    if (userRole === 'visitor') {
+      alert('Silakan login terlebih dahulu untuk melakukan checkout')
+      onNavigate('login')
+      return
+    }
+
+    if (cart.length > 0) {
+      onNavigate('checkout', { cartItems: cart })
+      setIsCartOpen(false)
+    } else {
+      alert("Keranjang belanja kosong!")
+    }
+  }
+
+  // === LOGIKA WISHLIST ===
   const handleAddToWishlist = (product) => {
-    // ... (Logika handleAddToWishlist)
     if (userRole === 'visitor') {
       alert('Silakan login terlebih dahulu untuk menambahkan produk ke Wishlist.')
       onNavigate('login')
@@ -90,28 +109,22 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
     handleRemoveFromWishlist(product.id)
   }
 
+  // === LOGIKA NAVIGASI/FILTER ===
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat)
-    // Tutup sidebar setelah memilih kategori
     setIsSidebarOpen(false)
   }
 
-  const handleCheckout = () => {
-    // ... (Logika handleCheckout)
-    if (userRole === 'visitor') {
-      alert('Silakan login terlebih dahulu untuk melakukan checkout')
-      onNavigate('login')
-      return
-    }
-
-    if (cart.length > 0) {
-      onNavigate('checkout', { cartItems: cart })
-      setIsCartOpen(false)
-    } else {
-      alert("Keranjang belanja kosong!")
+  // LOGIKA LOGOUT YANG SUDAH BENAR
+  const handleLogoutClick = () => {
+    // PERBAIKAN INI HANYA BISA BEKERJA KARENA setWishlist didefinisikan di atas.
+    if (window.confirm('Apakah Anda yakin ingin logout?')) {
+      onLogout() // Memanggil App.jsx's handleLogout
+      setWishlist([]) // Membersihkan state Wishlist lokal
     }
   }
 
+  // === LOGIKA TAMPILAN ===
   const filteredProducts = products.filter(p => {
     const categoryKey = p.category.toLowerCase().replace(/ /g, '-')
     const selectedKey = selectedCategory.toLowerCase().replace(/ /g, '-')
@@ -127,7 +140,6 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
   return (
     <div className={`app-container ${isSidebarOpen ? '' : 'sidebar-closed'}`}>
 
-      {/* Menggunakan Komponen Sidebar */}
       <Sidebar
         categories={categories}
         selectedCategory={selectedCategory}
@@ -136,7 +148,6 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
 
       <main className="main-content">
 
-        {/* Menggunakan Komponen Header */}
         <Header
           search={search}
           setSearch={setSearch}
@@ -147,7 +158,7 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
           wishlistCount={wishlistCount}
           userRole={userRole}
           onNavigate={onNavigate}
-          onLogout={onLogout}
+          onLogout={handleLogoutClick}
         />
 
         <div className="dashboard">

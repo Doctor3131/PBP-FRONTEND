@@ -11,13 +11,9 @@ export default function Header({
   wishlistCount,
   userRole,
   onNavigate,
-  onLogout
+  onLogout // Prop ini adalah handler dari BerandaPage
 }) {
-  const handleLogoutClick = () => {
-    if (window.confirm('Apakah Anda yakin ingin logout?')) {
-      onLogout()
-    }
-  }
+  // Hapus fungsi handleLogoutClick lokal yang berlebihan
 
   return (
     <header className="app-header">
@@ -44,12 +40,10 @@ export default function Header({
           </button>
         ) : (
           <>
-            {/* Tombol Wishlist */}
             <button className="cart-icon-btn" onClick={onWishlistClick} title="Wishlist">
               ❤️
               {wishlistCount > 0 && <span className="cart-count-badge" style={{ backgroundColor: '#e74c3c' }}>{wishlistCount}</span>}
             </button>
-            {/* Tombol Cart */}
             <button className="cart-icon-btn" onClick={onCartClick} title="Cart">
               🛒
               {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
@@ -57,7 +51,9 @@ export default function Header({
             <button className="user-icon-btn" style={{ fontSize: '1.5em' }} title={userRole === 'admin' ? 'Admin' : 'User'}>
               {userRole === 'admin' ? '👑' : '👤'}
             </button>
-            <button onClick={handleLogoutClick} style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '500', fontSize: '0.9em' }}>
+            <button
+              onClick={onLogout} // <--- PERBAIKAN: Memanggil prop onLogout secara langsung
+              style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '500', fontSize: '0.9em' }}>
               Logout
             </button>
           </>
