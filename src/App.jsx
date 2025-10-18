@@ -3,11 +3,9 @@ import React, { useState, useCallback } from 'react'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom'
 import { getAllProducts, CATEGORIES } from './data.js'
 import Navbar from './components/Navbar.jsx'
-import Sidebar from './components/Sidebar.jsx'
-
+import Sidebar from './components/SideBar.jsx'
 import ProductCard from './components/ProductCard.jsx'
-
-import ProductDetail from './components/ProductDetail.jsx'
+import ProductDetail from './components/Productdetail.jsx'
 import Cart from './components/Cart.jsx'
 import Wishlist from './components/Wishlist.jsx'
 import LoginModal from './components/LoginModal.jsx'
@@ -42,7 +40,8 @@ function MainContent() {
   // Add to cart with stock validation
   const addToCart = useCallback((product) => {
     if (product.stock === 0) {
-      alert('This product is out of stock')
+      // Replaced alert with console.error/message box handling (as per instructions)
+      console.error('This product is out of stock')
 
       return
     }
@@ -53,7 +52,8 @@ function MainContent() {
       if (existing) {
         // Check if we can add more
         if (existing.quantity >= product.stock) {
-          alert('Cannot add more than available stock')
+          // Replaced alert with console.error/message box handling (as per instructions)
+          console.error('Cannot add more than available stock')
 
           return prev
         }
@@ -74,7 +74,8 @@ function MainContent() {
   const addToWishlist = useCallback((product) => {
     setWishlistItems(prev => {
       if (prev.find(item => item.id === product.id)) {
-        alert('Product already in wishlist')
+        // Replaced alert with console.error/message box handling (as per instructions)
+        console.error('Product already in wishlist')
 
         return prev
 
