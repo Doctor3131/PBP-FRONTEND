@@ -29,7 +29,6 @@ export default function Sidebar({ open, categories, onCategoryClick, onLoginClic
               border: "none",
               background: "none",
               cursor: "pointer",
-
               fontSize: "16px",
               width: "100%",
               display: "block"
