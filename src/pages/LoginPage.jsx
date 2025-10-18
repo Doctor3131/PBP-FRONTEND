@@ -12,7 +12,7 @@ export default function LoginPage({ onLogin }) {
         </button>
         <button
           onClick={() => onLogin('')}
-          style={{ padding: "10px 20px", backgroundColor: "#28a745", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer" }}
+          style={{ padding: "10px 20px", backgroundColor: "#000", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer" }}
         >
           Login as Admin
         </button>

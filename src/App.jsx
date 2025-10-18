@@ -146,6 +146,7 @@ function App() {
           onWishlistClick={() => setCurrentView('wishlist')}
           onUserClick={() => setCurrentView('dashboard')}
           onAdminClick={() => setCurrentView('admin')}
+          onLoginClick={() => setCurrentView('login')}
           userRole={userRole}
         />
         <div style={{ padding: '20px' }}>
