@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Navbar({ toggleSidebar, searchQuery, setSearchQuery, cartCount, wishlistCount, onCartClick, onWishlistClick }) {
+export default function Navbar({ toggleSidebar, searchQuery, setSearchQuery, cartCount, wishlistCount, onCartClick, onWishlistClick, onUserClick }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 20px", backgroundColor: "#fff", boxShadow: "0 2px 5px rgba(0,0,0,0.1)" }}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -17,7 +17,7 @@ export default function Navbar({ toggleSidebar, searchQuery, setSearchQuery, car
       <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
         <button onClick={onWishlistClick} style={{ cursor: "pointer" }}>❤️ {wishlistCount}</button>
         <button onClick={onCartClick} style={{ cursor: "pointer" }}>🛒 {cartCount}</button>
-        <button style={{ cursor: "pointer" }}>👤</button>
+        <button onClick={onUserClick} style={{ cursor: "pointer" }}>👤</button>
       </div>
     </div>
   );
