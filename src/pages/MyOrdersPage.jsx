@@ -1,4 +1,3 @@
-// src/pages/MyOrdersPage.jsx
 import React from 'react'
 
 export default function MyOrdersPage({ orders, onNavigate }) {

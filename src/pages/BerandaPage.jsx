@@ -170,6 +170,7 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
                 product={product}
                 onAddToCart={handleAddToCart}
                 onAddToWishlist={handleAddToWishlist}
+                onNavigate={onNavigate}
               />
             ))}
           </div>

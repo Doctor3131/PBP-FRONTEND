@@ -1,7 +1,7 @@
 // src/components/ProductCardUser.jsx
 import React from 'react'
 
-export default function ProductCardUser({ product, onAddToCart, onAddToWishlist }) {
+export default function ProductCardUser({ product, onAddToCart, onAddToWishlist, onNavigate }) {
   // Ambil 'image' dari prop product
   const { name, price, stock, image } = product
 
@@ -13,7 +13,7 @@ export default function ProductCardUser({ product, onAddToCart, onAddToWishlist 
   })
 
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={() => onNavigate('productDetail', product)}>
       {/* Perbaikan: Menggunakan tag <img> */}
       <img src={image} alt={name} className="product-image" />
 
@@ -25,7 +25,7 @@ export default function ProductCardUser({ product, onAddToCart, onAddToWishlist 
         <div style={{ display: 'flex', gap: '10px', marginTop: 'auto' }}>
           <button
             className="add-to-cart-btn"
-            onClick={() => onAddToWishlist(product)}
+            onClick={(e) => { e.stopPropagation(); onAddToWishlist(product) }}
             style={{ background: '#e74c3c', flexGrow: 1, padding: '10px 5px' }}
             title="Add to Wishlist"
           >
@@ -34,7 +34,7 @@ export default function ProductCardUser({ product, onAddToCart, onAddToWishlist 
 
           <button
             className="add-to-cart-btn"
-            onClick={() => onAddToCart(product)}
+            onClick={(e) => { e.stopPropagation(); onAddToCart(product) }}
             disabled={stock <= 0}
             style={{ background: 'var(--accent-color)', flexGrow: 4 }}
           >
