@@ -1,6 +1,7 @@
 import React from "react";
 
-export default function Sidebar({ open, toggle, categories, onCategoryClick, onLoginClick }) {
+export default function Sidebar({ open, toggle, categories, onCategoryClick, onLoginClick, onLogoutClick, isLoggedIn }) {
+
   return (
     <div style={{
       position: "fixed",
@@ -19,12 +20,29 @@ export default function Sidebar({ open, toggle, categories, onCategoryClick, onL
       {categories.map(cat => (
         <button
           key={cat}
-          onClick={() => cat === "Login" ? onLoginClick() : onCategoryClick(cat)}
+          onClick={() => onCategoryClick(cat)}
           style={{ padding: "15px 20px", textAlign: "left", border: "none", background: "none", cursor: "pointer", fontSize: "16px" }}
         >
           {cat}
         </button>
       ))}
+
+      {/* Login/Logout Button Logic at the bottom */}
+      <button
+        onClick={isLoggedIn ? onLogoutClick : onLoginClick}
+        style={{
+          padding: "15px 20px",
+          textAlign: "left",
+          border: "none",
+          backgroundColor: isLoggedIn ? "#dc3545" : "#007bff",
+          color: "#fff",
+          cursor: "pointer",
+          fontSize: "16px",
+          marginTop: 'auto' // Push button to the bottom
+        }}
+      >
+        {isLoggedIn ? 'Logout' : 'Login'}
+      </button>
     </div>
   );
 }
