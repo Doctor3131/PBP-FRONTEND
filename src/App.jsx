@@ -1,12 +1,13 @@
 import { useState } from 'react'
 
-// Import semua halaman
+// Import all pages
 import BerandaPage from './pages/BerandaPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import CheckoutPage from './pages/CheckoutPage.jsx'
 import OrderDetailPage from './pages/OrderDetailPage.jsx'
+import MyOrdersPage from './pages/MyOrdersPage.jsx' // Import the new page
 
-// Import gaya CSS
+// Import CSS styles
 import './assets/index.css'
 
 // ===== MAIN APP (Router-like logic without react-router-dom) =====
@@ -15,9 +16,13 @@ export default function App() {
   const [pageData, setPageData] = useState(null)
   const [userRole, setUserRole] = useState('visitor')
   const [cart, setCart] = useState([])
+  const [orders, setOrders] = useState([]) // Add state for orders
 
-  // Fungsi navigasi yang meneruskan data ke halaman berikutnya
+  // Navigation function that passes data to the next page
   const navigate = (page, data = null) => {
+    if (page === 'order' && data && !orders.find(o => o.id === data.id)) {
+      setOrders(prevOrders => [...prevOrders, data])
+    }
     setCurrentPage(page)
     setPageData(data)
   }
@@ -30,6 +35,7 @@ export default function App() {
   const handleLogout = () => {
     setUserRole('visitor')
     setCart([])
+    setOrders([]) // Clear orders on logout
     navigate('home')
   }
 
@@ -64,13 +70,19 @@ export default function App() {
         />
       )
     }
-    // Fallback atau error page
+    // Add the new case for My Orders page
+    if (currentPage === 'my-orders') {
+      return (
+        <MyOrdersPage
+          orders={orders}
+          onNavigate={navigate}
+        />
+      )
+    }
+    // Fallback or error page
     return <h1>404 | Page Not Found</h1>
   }
 
-  // Karena Anda menyertakan gaya CSS dalam string, kita akan me-render tag <style>
-  // Namun, karena proyek Anda sudah memiliki file index.css, kita akan menghapus 
-  // tag <style> dan mengandalkan impor CSS di src/main.jsx.
   return (
     <>
       {renderPage()}

@@ -11,9 +11,16 @@ export default function Header({
   wishlistCount,
   userRole,
   onNavigate,
-  onLogout // Prop ini adalah handler dari BerandaPage
+  onLogout
 }) {
-  // Hapus fungsi handleLogoutClick lokal yang berlebihan
+
+  // FIX: Handle the confirmation dialog directly within the component
+  // that contains the button. This makes the component more self-contained.
+  const handleLogoutClick = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      onLogout() // This calls the function from App.jsx
+    }
+  }
 
   return (
     <header className="app-header">
@@ -52,7 +59,7 @@ export default function Header({
               {userRole === 'admin' ? '👑' : '👤'}
             </button>
             <button
-              onClick={onLogout} // <--- PERBAIKAN: Memanggil prop onLogout secara langsung
+              onClick={handleLogoutClick} // FIX: Use the new local handler
               style={{ padding: '8px 16px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '500', fontSize: '0.9em' }}>
               Logout
             </button>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react' // Import useEffect
 
 // Pastikan semua komponen ini diimpor dari lokasi yang benar
 import ProductCardUser from '../components/ProductCardUser.jsx'
@@ -17,12 +17,17 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
   const [selectedCategory, setSelectedCategory] = useState("Home")
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
-
-  // PERBAIKAN: setWishlist HARUS didefinisikan di sini
   const [wishlist, setWishlist] = useState([])
   const [isWishlistOpen, setIsWishlistOpen] = useState(false)
   // =======================
 
+  // FIX: Use an effect to clear local state like wishlist when the user logs out.
+  // This is more reliable than clearing it in the click handler.
+  useEffect(() => {
+    if (userRole === 'visitor') {
+      setWishlist([])
+    }
+  }, [userRole]) // This effect runs whenever userRole changes.
 
   // === LOGIKA CART ===
   const handleAddToCart = (product) => {
@@ -115,15 +120,6 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
     setIsSidebarOpen(false)
   }
 
-  // LOGIKA LOGOUT YANG SUDAH BENAR
-  const handleLogoutClick = () => {
-    // PERBAIKAN INI HANYA BISA BEKERJA KARENA setWishlist didefinisikan di atas.
-    if (window.confirm('Apakah Anda yakin ingin logout?')) {
-      onLogout() // Memanggil App.jsx's handleLogout
-      setWishlist([]) // Membersihkan state Wishlist lokal
-    }
-  }
-
   // === LOGIKA TAMPILAN ===
   const filteredProducts = products.filter(p => {
     const categoryKey = p.category.toLowerCase().replace(/ /g, '-')
@@ -158,10 +154,15 @@ export default function BerandaPage({ onNavigate, userRole, cart, setCart, onLog
           wishlistCount={wishlistCount}
           userRole={userRole}
           onNavigate={onNavigate}
-          onLogout={handleLogoutClick}
+          onLogout={onLogout}
         />
 
         <div className="dashboard">
+          {userRole === 'user' && (
+            <button onClick={() => onNavigate('my-orders')} style={{ marginBottom: '20px', padding: '10px 15px', cursor: 'pointer', border: 'none', borderRadius: '5px', backgroundColor: '#2c3e50', color: 'white' }}>
+              My Orders
+            </button>
+          )}
           <div className="product-list">
             {filteredProducts.map(product => (
               <ProductCardUser
