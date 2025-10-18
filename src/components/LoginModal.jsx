@@ -1,16 +1,23 @@
-import React from "react";
+import React from 'react'
 
 export default function LoginModal({ onClose }) {
+
   return (
-    <div style={{
-      position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-      background: "rgba(0,0,0,0.5)", display: "flex", justifyContent: "center", alignItems: "center"
-    }}>
-      <div style={{ background: "#fff", padding: "30px", borderRadius: "10px", width: "300px" }}>
-        <h2>Login</h2>
-        <p>This is a simulated login. Clicking close will close this modal.</p>
-        <button onClick={onClose} style={{ marginTop: "20px", padding: "10px 20px", cursor: "pointer" }}>Close</button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full">
+        <h2 className="text-2xl font-bold mb-4">Login</h2>
+        <p className="text-gray-600 mb-6">
+
+          This is a simulated login. Click close to return to the store.
+        </p>
+        <button
+          onClick={onClose}
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+
+          Close
+        </button>
       </div>
     </div>
-  );
+  )
 }
