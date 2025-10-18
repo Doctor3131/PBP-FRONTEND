@@ -3,7 +3,7 @@ import React from "react";
 export default function Cart({ cartItems, setCartItems }) {
   const removeItem = name => setCartItems(cartItems.filter(item => item.name !== name));
   const updateQuantity = (name, quantity) => {
-    setCartItems(cartItems.map(item => item.name === name ? {...item, quantity} : item));
+    setCartItems(cartItems.map(item => item.name === name ? { ...item, quantity } : item));
   };
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
