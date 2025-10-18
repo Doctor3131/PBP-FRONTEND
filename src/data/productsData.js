@@ -1,18 +1,5 @@
-import { useState } from "react";
-import SearchBar from "../components/SearchBar";
-import ProductList from "../components/ProductList";
-import AddProductButton from "../components/AddProductButton";
-import AddProductModal from "../components/AddProductModal";
-import Sidebar from "../components/Sidebar";
-import ProfileButton from "../components/ProfileButton";
-import DashboardStats from "../components/DashboardStats";
-import { useProducts } from '../hooks/useProducts';
-import { useOrders } from '../hooks/useOrders';
-import { useUsers } from '../hooks/useUsers';
-import "../assets/index.css";
-
-
-const CATEGORIES = [
+// Daftar kategori yang tersedia
+export const CATEGORIES = [
   'Keyboards',
   'Switches', 
   'Keycaps',
@@ -26,7 +13,8 @@ const CATEGORIES = [
   'Tools & Accessories'
 ];
 
-const PRODUCTS = {
+// Data produk dalam bentuk objek berdasarkan kategori
+export const PRODUCTS_OBJ = {
   keyboards: [
     { name: 'GMMK Pro 75% Black', price: 3500000, stock: 15 },
     { name: 'Keychron Q1 Pro QMK/VIA', price: 2800000, stock: 20 },
@@ -204,105 +192,34 @@ const PRODUCTS = {
   ] 
 };
 
-const categoryMap = new Map();
-CATEGORIES.forEach(cat => {
-  categoryMap.set(cat.toLowerCase(), cat);
-});
-
-const initialProducts = [];
-let productIdCounter = 1;
-
-for (const categoryKey in PRODUCTS) {
-  const categoryName = categoryMap.get(categoryKey);
-  if (categoryName) {
-    PRODUCTS[categoryKey].forEach(product => {
-      initialProducts.push({
-        id: productIdCounter++,
-        name: product.name,
-        price: product.price,
-        stock: product.stock,
-        category: categoryName,
-        image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` 
-      });
-    });
-  }
-}
-
-export default function DashboardAdmin() {
-  // Ambil data dan fungsi dari semua hook terkait
-  const { 
-    products, 
-    categories, 
-    handleAddProduct, 
-    handleDeleteProduct, 
-    handleUpdateStock, 
-    handleAddCategory, 
-    handleDeleteCategory 
-  } = useProducts();
-
-  const orders = useOrders(); // Ambil data pesanan
-  const users = useUsers();   // Ambil data pengguna
-
-  // State spesifik untuk halaman admin tetap sama
-  const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
-
-  const filteredProducts = products.filter((p) => {
-    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = selectedCategory === "" || p.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+/**
+ * Fungsi helper untuk mengubah objek PRODUCTS_OBJ menjadi array datar
+ * yang siap digunakan untuk state aplikasi.
+ */
+export const getInitialProducts = () => {
+  // Buat map untuk memudahkan pencarian nama kategori dari key-nya
+  const categoryMap = new Map();
+  CATEGORIES.forEach(cat => {
+    categoryMap.set(cat.toLowerCase(), cat);
   });
 
-  return (
-    <div className={`app-container ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-      {!isSidebarOpen && (
-        <button className="open-sidebar-btn" onClick={() => setIsSidebarOpen(true)}>
-          ☰
-        </button>
-      )}
+  const initialProducts = [];
+  let productIdCounter = 1;
 
-      <Sidebar 
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategorySelect={setSelectedCategory}
-        onDeleteCategory={handleDeleteCategory}
-        isSidebarOpen={isSidebarOpen}
-        onToggleSidebar={() => setIsSidebarOpen(false)}
-        showAddCategoryModal={showAddCategoryModal}
-        setShowAddCategoryModal={setShowAddCategoryModal}
-        onAddCategory={handleAddCategory}
-      />
-      <main className="main-content">
-        <div className="dashboard">
-          <ProfileButton />
-          <h1 className="title">Dashboard Produk</h1>
-          
-          {/* Kirim data yang diperlukan ke DashboardStats */}
-          <DashboardStats 
-            products={products} 
-            orders={orders} 
-            users={users} 
-          />
-
-          <SearchBar search={search} setSearch={setSearch} />
-          <ProductList
-            products={filteredProducts}
-            onDelete={handleDeleteProduct}
-            onUpdateStock={handleUpdateStock}
-          />
-          <AddProductButton onClick={() => setShowModal(true)} />
-          {showModal && (
-            <AddProductModal
-              onClose={() => setShowModal(false)}
-              onAdd={handleAddProduct}
-              categories={categories}
-            />
-          )}
-        </div>
-      </main>
-    </div>
-  );
-}
+  for (const categoryKey in PRODUCTS_OBJ) {
+    const categoryName = categoryMap.get(categoryKey);
+    if (categoryName) {
+      PRODUCTS_OBJ[categoryKey].forEach(product => {
+        initialProducts.push({
+          id: productIdCounter++,
+          name: product.name,
+          price: product.price,
+          stock: product.stock,
+          category: categoryName,
+          image: `https://via.placeholder.com/250?text=${encodeURIComponent(product.name)}` // Gambar placeholder dinamis
+        });
+      });
+    }
+  }
+  return initialProducts;
+};
