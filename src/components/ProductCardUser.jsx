@@ -1,47 +1,30 @@
 // src/components/ProductCardUser.jsx
+
 import React from 'react'
+import { Link } from 'react-router-dom' // Import Link
 
-export default function ProductCardUser({ product, onAddToCart, onAddToWishlist, onNavigate }) {
-  // Ambil 'image' dari prop product
-  const { name, price, stock, image } = product
-
-  const formattedPrice = price.toLocaleString('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  })
+// Komponen ini tidak perlu diubah secara fungsional, hanya cara navigasinya
+export default function ProductCardUser({ product, onAddToCart, onAddToWishlist }) {
+  const { id, name, description, price, image } = product
 
   return (
-    <div className="product-card" onClick={() => onNavigate('productDetail', product)}>
-      {/* Perbaikan: Menggunakan tag <img> */}
+    // Bungkus seluruh card dengan Link
+    <Link to={`/product/${id}`} className="product-card">
       <img src={image} alt={name} className="product-image" />
-
       <div className="product-info">
-        <h3 className="product-name">{name}</h3>
-        <p className="product-price">{formattedPrice}</p>
-        <p className="product-stock">Stok: {stock}</p>
-
-        <div style={{ display: 'flex', gap: '10px', marginTop: 'auto' }}>
-          <button
-            className="add-to-cart-btn"
-            onClick={(e) => { e.stopPropagation(); onAddToWishlist(product) }}
-            style={{ background: '#e74c3c', flexGrow: 1, padding: '10px 5px' }}
-            title="Add to Wishlist"
-          >
-            ❤️
-          </button>
-
-          <button
-            className="add-to-cart-btn"
-            onClick={(e) => { e.stopPropagation(); onAddToCart(product) }}
-            disabled={stock <= 0}
-            style={{ background: 'var(--accent-color)', flexGrow: 4 }}
-          >
-            {stock > 0 ? 'Keranjang 🛒' : 'Habis'}
-          </button>
-        </div>
+        <h3>{name}</h3>
+        <p>{description}</p>
+        <p className="price">Rp{price.toLocaleString()}</p>
       </div>
-    </div>
+      <div className="product-actions">
+        {/* Hentikan propagasi event agar Link tidak terpicu saat tombol diklik */}
+        <button onClick={(e) => { e.preventDefault(); onAddToCart(product) }}>
+          Add to Cart
+        </button>
+        <button onClick={(e) => { e.preventDefault(); onAddToWishlist(product) }}>
+          Add to Wishlist
+        </button>
+      </div>
+    </Link>
   )
 }
