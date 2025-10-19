@@ -1,9 +1,6 @@
-// src/App.jsx
-
 import React, { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 
-// Import Halaman (Pages)
 import BerandaPage from './pages/BerandaPage'
 import LoginPage from './pages/LoginPage'
 import CheckoutPage from './pages/CheckoutPage'
@@ -12,31 +9,19 @@ import OrderDetailPage from './pages/OrderDetailPage'
 import AdminPage from './pages/AdminPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 
-// Import CSS
 import './assets/index.css'
 import './assets/admin.css'
 
-/**
- * Komponen ProtectedRoute
- * Best practice untuk melindungi rute yang memerlukan otentikasi.
- * @param {object} props - Props.
- * @param {boolean} props.isAllowed - Kondisi apakah user diizinkan mengakses.
- * @param {string} props.redirectTo - Rute tujuan jika tidak diizinkan.
- * @param {React.ReactNode} props.children - Komponen anak yang akan dirender jika diizinkan.
- */
 const ProtectedRoute = ({ isAllowed, redirectTo = '/login', children }) => {
   if (!isAllowed) {
-    // Jika tidak diizinkan, arahkan ke halaman login
     alert('Anda harus login untuk mengakses halaman ini.')
     return <Navigate to={redirectTo} replace />
   }
   return children
 }
 
-// ===== KOMPONEN UTAMA APP =====
 export default function App() {
-  // State utama yang dikelola secara terpusat
-  const [userRole, setUserRole] = useState('visitor') // 'visitor', 'user', 'admin'
+  const [userRole, setUserRole] = useState('visitor')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   // State untuk data e-commerce
