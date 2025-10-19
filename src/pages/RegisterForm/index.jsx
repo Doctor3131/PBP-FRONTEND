@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { registerAPI } from '../../services/authService' // <-- Gunakan Service
-import '../../assets/styles/AuthForm.css' // <-- Path CSS baru
+import { registerAPI } from '../../services/authService'
+import '../../assets/styles/AuthForm.css'
 
 const RegisterForm = () => {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
@@ -15,8 +16,7 @@ const RegisterForm = () => {
     setMessage('')
 
     try {
-      // Panggil fungsi dari service
-      const response = await registerAPI({ email, password })
+      const response = await registerAPI({ name, email, password })
 
       setMessage(response.message)
       setMessageType('success')
@@ -35,7 +35,10 @@ const RegisterForm = () => {
         <h2>Registrasi Akun</h2>
         {message && <div className={`message ${messageType}`}>{message}</div>}
         <form onSubmit={handleSubmit}>
-          {/* ... form JSX tidak berubah ... */}
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
+            <input type="Name" id="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

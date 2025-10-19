@@ -27,7 +27,6 @@ api.interceptors.response.use(
   (error) => {
     const errorMessage = error.response?.data?.message || error.message || 'Terjadi kesalahan pada server.'
     if (error.response?.status === 401) {
-      // Logika untuk logout jika tidak terautentikasi
       localStorage.clear()
       window.location.href = '/login'
     }
