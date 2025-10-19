@@ -1,9 +1,14 @@
+// src/pages/AdminPage.jsx
+
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom' // 1. Import useNavigate
 import { useProducts } from '../hooks/useProducts.js'
 import ProductCardAdmin from '../components/ProductCardAdmin.jsx'
 import '../assets/admin.css'
 
-export default function AdminPage({ onNavigate }) {
+// 2. Hapus prop 'onNavigate', ganti dengan 'onLogout' dari App.jsx
+export default function AdminPage({ onLogout }) {
+  const navigate = useNavigate() // 3. Inisialisasi hook
   const { products: initialProducts } = useProducts()
   const [products, setProducts] = useState(initialProducts)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,8 +48,12 @@ export default function AdminPage({ onNavigate }) {
           <button onClick={handleAddNew} className="admin-button add-new-button">
             Add New Product
           </button>
-          <button onClick={() => onNavigate('home')} className="admin-button">
+          {/* 4. Ganti onNavigate dengan navigate('/') */}
+          <button onClick={() => navigate('/')} className="admin-button">
             View Store
+          </button>
+          <button onClick={onLogout} className="admin-button delete-button">
+            Logout
           </button>
         </div>
       </header>
@@ -74,7 +83,9 @@ export default function AdminPage({ onNavigate }) {
   )
 }
 
+// Komponen Modal tidak perlu diubah
 function ProductEditModal({ product, onSave, onClose }) {
+  // ... (kode modal tetap sama)
   const [formData, setFormData] = useState(
     product || { name: '', price: '', stock: '', category: 'Keyboards', specs: '' }
   )
@@ -94,6 +105,7 @@ function ProductEditModal({ product, onSave, onClose }) {
       <div className="modal-content admin-modal">
         <h2>{product ? 'Edit Product' : 'Add New Product'}</h2>
         <form onSubmit={handleSubmit}>
+          {/* ... (form input tetap sama) ... */}
           <div className="form-group">
             <label>Product Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} required />
