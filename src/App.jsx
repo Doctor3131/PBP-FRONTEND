@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 
-// Impor dari direktori pages
 import HomePage from './pages/HomePage'
 import LoginForm from './pages/LoginForm'
 import RegisterForm from './pages/RegisterForm'
 import ProtectedPage from './pages/ProtectedPage'
 import OrderManagementPage from './pages/OrderManagementPage'
-
-// The line 'import "./App.css";' has been removed as the file is missing.
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)

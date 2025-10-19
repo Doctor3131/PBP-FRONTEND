@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginAPI } from '../../services/authService'
 import '../../assets/styles/AuthForm.css'
@@ -20,13 +20,13 @@ const LoginForm = ({ setIsAuthenticated, setUserEmail, setUserRole }) => {
       setMessage(response.message)
       setMessageType('success')
 
-      localStorage.setItem('ecom_token', response.token)
-      localStorage.setItem('user_email', response.user.email)
-      localStorage.setItem('user_role', response.user.role)
+      localStorage.setItem('ecom_token', response.data.token)
+      localStorage.setItem('user_email', response.data.user.email)
+      localStorage.setItem('user_role', response.data.user.role)
 
       setIsAuthenticated(true)
-      setUserEmail(response.user.email)
-      setUserRole(response.user.role)
+      setUserEmail(response.data.user.email)
+      setUserRole(response.data.user.role)
 
       setTimeout(() => {
         navigate('/')
@@ -44,7 +44,6 @@ const LoginForm = ({ setIsAuthenticated, setUserEmail, setUserRole }) => {
         <h2>Login KeyStore</h2>
         {message && <div className={`message ${messageType}`}>{message}</div>}
         <form onSubmit={handleSubmit}>
-          {/* ... form JSX tidak berubah ... */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input

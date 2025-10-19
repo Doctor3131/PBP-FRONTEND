@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchProtectedCheckoutAPI } from '../../services/checkoutService' // <-- Gunakan Service
+import { fetchProtectedCheckoutAPI } from '../../services/checkoutService'
 
 const ProtectedPage = ({ isAuthenticated }) => {
   const [checkoutMessage, setCheckoutMessage] = useState('Memuat data...')
