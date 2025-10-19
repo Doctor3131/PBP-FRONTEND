@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useOrders from '../../hooks/useOrders'
 import { formatCurrency, validStatuses, getStatusStyle } from '../../utils/helpers'
-import { styles } from './styles'
+import { styles } from './styles.js' // <-- Added .js extension for clarity
 
 const OrderManagementPage = ({ isAuthenticated }) => {
   const navigate = useNavigate()

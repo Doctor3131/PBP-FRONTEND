@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginAPI } from '../../services/authService' // <-- Gunakan Service
-import '../../assets/styles/AuthForm.css' // <-- Path CSS baru
+import { loginAPI } from '../../services/authService'
+import '../../assets/styles/AuthForm.css'
 
 const LoginForm = ({ setIsAuthenticated, setUserEmail, setUserRole }) => {
   const [email, setEmail] = useState('')
@@ -15,18 +15,15 @@ const LoginForm = ({ setIsAuthenticated, setUserEmail, setUserRole }) => {
     setMessage('')
 
     try {
-      // Panggil fungsi dari service, bukan axios langsung
       const response = await loginAPI({ email, password })
 
       setMessage(response.message)
       setMessageType('success')
 
-      // Simpan token dan data user ke localStorage
       localStorage.setItem('ecom_token', response.token)
       localStorage.setItem('user_email', response.user.email)
       localStorage.setItem('user_role', response.user.role)
 
-      // Update state di App.js
       setIsAuthenticated(true)
       setUserEmail(response.user.email)
       setUserRole(response.user.role)
@@ -36,7 +33,6 @@ const LoginForm = ({ setIsAuthenticated, setUserEmail, setUserRole }) => {
       }, 1000)
 
     } catch (error) {
-      // Error sudah diformat oleh interceptor di api.js
       setMessage(error.message)
       setMessageType('error')
     }
