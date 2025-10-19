@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import useOrders from '../../hooks/useOrders'
 import { formatCurrency, validStatuses, getStatusStyle } from '../../utils/helpers'
-import { styles } from './styles' // Impor style dari file terpisah
+import { styles } from './styles'
 
 const OrderManagementPage = ({ isAuthenticated }) => {
   const navigate = useNavigate()
@@ -18,8 +18,13 @@ const OrderManagementPage = ({ isAuthenticated }) => {
     updateOrderStatus(orderId, newStatus)
   }
 
-  if (loading) return <div style={{ padding: '50px', textAlign: 'center' }}>Memuat Data Pesanan...</div>
-  if (error) return <div style={{ padding: '50px', textAlign: 'center', color: 'red' }}>Error: {error}</div>
+  if (loading) {
+    return <div style={{ padding: '50px', textAlign: 'center' }}>Memuat Data Pesanan...</div>
+  }
+
+  if (error) {
+    return <div style={{ padding: '50px', textAlign: 'center', color: 'red' }}>Error: {error}</div>
+  }
 
   return (
     <div style={styles.container}>
