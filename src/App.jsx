@@ -49,6 +49,14 @@ function App() {
       } catch (error) {
         console.error("Gagal mengambil data awal:", error)
       }
+    } else {
+      // Fetch categories for non-authenticated users
+      try {
+        const categoriesRes = await fetchCategoriesAPI()
+        setCategories([{ id: 0, name: 'Home' }, ...categoriesRes.data])
+      } catch (error) {
+        console.error("Gagal mengambil kategori:", error)
+      }
     }
   }, [isAuthenticated])
 
@@ -59,6 +67,8 @@ function App() {
   const handleLogout = () => {
     localStorage.clear()
     setIsAuthenticated(false)
+    setCartItemCount(0)
+    setWishlistItems([])
   }
 
   const handleAddToCart = async (product) => {
@@ -103,16 +113,21 @@ function App() {
           />
           <main>
             <Routes>
-              <Route path="/" element={!isAuthenticated ? <HomePage /> : <Navigate to="/shop" />} />
+              {/* Redirect root to shop */}
+              <Route path="/" element={<Navigate to="/shop" />} />
+
               <Route path="/login" element={!isAuthenticated ? <LoginForm setIsAuthenticated={setIsAuthenticated} setUserEmail={setUserEmail} setUserRole={setUserRole} /> : <Navigate to="/shop" />} />
               <Route path="/register" element={!isAuthenticated ? <RegisterForm /> : <Navigate to="/shop" />} />
 
-              <Route path="/shop" element={isAuthenticated ? <ShopPage searchQuery={searchQuery} selectedCategory={selectedCategory} /> : <Navigate to="/login" />} />
+              {/* Shop page - accessible by everyone */}
+              <Route path="/shop" element={<ShopPage searchQuery={searchQuery} selectedCategory={selectedCategory} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} />} />
+
+              {/* Protected routes */}
               <Route path="/product/:id" element={isAuthenticated ? <ProductDetailPage handleAddToWishlist={handleAddToWishlist} /> : <Navigate to="/login" />} />
               <Route path="/cart" element={isAuthenticated ? <CartPage /> : <Navigate to="/login" />} />
               <Route path="/wishlist" element={isAuthenticated ? <WishlistPage wishlistItems={wishlistItems} setWishlistItems={setWishlistItems} handleAddToCart={handleAddToCart} /> : <Navigate to="/login" />} />
 
-              <Route path="/admin/orders" element={isAuthenticated && userRole === 'admin' ? <OrderManagementPage /> : <Navigate to="/shop" />} />
+              <Route path="/admin/orders" element={isAuthenticated && userRole === 'admin' ? <OrderManagementPage isAuthenticated={isAuthenticated} /> : <Navigate to="/shop" />} />
 
               <Route path="*" element={<h1 style={{ textAlign: 'center', marginTop: '50px' }}>404 - Halaman Tidak Ditemukan</h1>} />
             </Routes>
