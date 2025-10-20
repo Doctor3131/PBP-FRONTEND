@@ -75,12 +75,12 @@ const ProductDetailPage = ({ handleAddToWishlist }) => {
             >
               Masukkan ke Keranjang
             </button>
-            <button
-              onClick={() => handleAddToWishlist(product)}
-              style={{ padding: '12px 24px', backgroundColor: '#fff', color: '#007bff', border: '1px solid #007bff', borderRadius: '6px', cursor: 'pointer' }}
-            >
-              ❤️ Tambah ke Wishlist
-            </button>
+            {/* <button */}
+            {/*   onClick={() => handleAddToWishlist(product)} */}
+            {/*   style={{ padding: '12px 24px', backgroundColor: '#fff', color: '#007bff', border: '1px solid #007bff', borderRadius: '6px', cursor: 'pointer' }} */}
+            {/* > */}
+            {/*   ❤️ Tambah ke Wishlist */}
+            {/* </button> */}
           </div>
         </div>
       </div>

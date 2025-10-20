@@ -120,12 +120,41 @@ function App() {
               <Route path="/register" element={!isAuthenticated ? <RegisterForm /> : <Navigate to="/shop" />} />
 
               {/* Shop page - accessible by everyone */}
-              <Route path="/shop" element={<ShopPage searchQuery={searchQuery} selectedCategory={selectedCategory} setSidebarOpen={setSidebarOpen} isAuthenticated={isAuthenticated} />} />
+              <Route
+                path="/shop"
+                element={
+                  <ShopPage
+                    searchQuery={searchQuery}
+                    selectedCategory={selectedCategory}
+                    setSidebarOpen={setSidebarOpen}
+                    isAuthenticated={isAuthenticated}
+                    handleAddToWishlist={handleAddToWishlist}
+                  />
+                }
+              />
 
               {/* Protected routes */}
-              <Route path="/product/:id" element={isAuthenticated ? <ProductDetailPage handleAddToWishlist={handleAddToWishlist} /> : <Navigate to="/login" />} />
+              <Route
+                path="/product/:id"
+                element={
+                  isAuthenticated ?
+                    <ProductDetailPage handleAddToWishlist={handleAddToWishlist} /> :
+                    <Navigate to="/login" />
+                }
+              />
               <Route path="/cart" element={isAuthenticated ? <CartPage /> : <Navigate to="/login" />} />
-              <Route path="/wishlist" element={isAuthenticated ? <WishlistPage wishlistItems={wishlistItems} setWishlistItems={setWishlistItems} handleAddToCart={handleAddToCart} /> : <Navigate to="/login" />} />
+              <Route
+                path="/wishlist"
+                element={
+                  isAuthenticated ?
+                    <WishlistPage
+                      wishlistItems={wishlistItems}
+                      setWishlistItems={setWishlistItems}
+                      handleAddToCart={handleAddToCart}
+                    /> :
+                    <Navigate to="/login" />
+                }
+              />
 
               <Route path="/admin/orders" element={isAuthenticated && userRole === 'admin' ? <OrderManagementPage isAuthenticated={isAuthenticated} /> : <Navigate to="/shop" />} />
 

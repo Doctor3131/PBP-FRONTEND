@@ -41,19 +41,20 @@ export default function Navbar({
       />
 
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-        <Link
-          to={isAuthenticated ? "/wishlist" : "/login"}
-          onClick={handleWishlistClick}
-          style={{ cursor: 'pointer', textDecoration: 'none', color: 'black' }}
-        >
-          ❤️ {isAuthenticated ? wishlistItemCount : 0}
-        </Link>
+        {/* <Link */}
+        {/*   to={isAuthenticated ? "/wishlist" : "/login"} */}
+        {/*   onClick={handleWishlistClick} */}
+        {/*   style={{ cursor: 'pointer', textDecoration: 'none', color: 'black' }} */}
+        {/* > */}
+        {/*   ❤️ {isAuthenticated ? wishlistItemCount : 0} */}
+        {/* </Link> */}
         <Link
           to={isAuthenticated ? "/cart" : "/login"}
           onClick={handleCartClick}
           style={{ cursor: 'pointer', textDecoration: 'none', color: 'black' }}
         >
-          🛒 {isAuthenticated ? cartItemCount : 0}
+          🛒
+          {/* {isAuthenticated ? cartItemCount : 0} */}
         </Link>
         {isAuthenticated ? (
           <button onClick={handleLogout} style={{ cursor: 'pointer', padding: '8px 12px', border: 'none', borderRadius: '6px', background: '#dc3545', color: 'white' }}>Logout</button>

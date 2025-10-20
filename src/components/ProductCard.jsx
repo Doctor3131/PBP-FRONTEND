@@ -8,7 +8,7 @@ export default function ProductCard({ product, onClick, addToCart, addToWishlist
       <p>Rp {product.price.toLocaleString()}</p>
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px" }}>
         <button onClick={() => addToCart(product)} style={{ cursor: "pointer" }}>Buy</button>
-        <button onClick={() => addToWishlist(product)} style={{ cursor: "pointer" }}>❤️</button>
+        {/* <button onClick={() => addToWishlist(product)} style={{ cursor: "pointer" }}>❤️</button> */}
       </div>
       {product.stock === 0 && <span style={{ color: "red" }}>Sold Out</span>}
     </div>
